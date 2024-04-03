@@ -10,10 +10,10 @@ import (
 	"fmt"
 	config "github.com/remotemobprogramming/mob/v4/configuration"
 	"github.com/remotemobprogramming/mob/v4/help"
+	"github.com/remotemobprogramming/mob/v4/manage"
 	"github.com/remotemobprogramming/mob/v4/open"
 	"github.com/remotemobprogramming/mob/v4/say"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -356,9 +356,9 @@ func execute(command string, parameter []string, configuration config.Configurat
 		} else {
 			help.Help(configuration)
 		}
-	case "mobbers":
+	case "manage":
 		if len(parameter) > 1 {
-			manageMobbers(configuration, parameter)
+			manageParticipants(configuration, parameter)
 		} else {
 			help.Help(configuration)
 		}
@@ -1311,6 +1311,7 @@ func showNext(configuration config.Configuration) {
 	if numberOfLines < 1 {
 		return
 	}
+	// TODO: if participants.txt exists, use it
 	nextTypist, previousCommitters := findNextTypist(lines, gitUserName)
 	if nextTypist != "" {
 		if len(previousCommitters) != 0 {
@@ -1500,17 +1501,13 @@ var exit = func(code int) {
 	os.Exit(code)
 }
 
-func manageMobbers(configuration config.Configuration, parameter []string) {
+func manageParticipants(configuration config.Configuration, parameter []string) {
 	adding := []string{"add", "include", "+"}
 	removing := []string{"remove", "exclude", "-"}
 	if slices.Contains(adding, parameter[0]) == true {
-		for i := 1; i < len(parameter); i++ {
-			log.Println("Adding:", parameter[i])
-		}
+		manage.AddParticipants(parameter[1:])
 	} else if slices.Contains(removing, parameter[0]) == true {
-		for i := 1; i < len(parameter); i++ {
-			log.Println("Removing:", parameter[i])
-		}
+		manage.RemoveParticipants(parameter[1:])
 	} else {
 		help.Help(configuration)
 	}

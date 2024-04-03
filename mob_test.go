@@ -1846,6 +1846,55 @@ func TestMobVersionWorksOutsideOfGitRepository(t *testing.T) {
 	assertOutputContains(t, output, "v"+versionNumber)
 }
 
+//func TestManageAddsParticipants(t *testing.T) {
+//	filename := "participants.txt"
+//	_, configuration := setup(t)
+//
+//	// Add Jane, Jo, and Jack
+//	initialAdd := []string{"add", "Jane", "Jo", "Jack"}
+//	manageParticipants(configuration, initialAdd)
+//	file, _ := os.Open("participants.txt")
+//	var participants []string
+//	scanner := bufio.NewScanner(file)
+//	for scanner.Scan() {
+//		participants = append(participants, scanner.Text())
+//	}
+//	expected := []string{"Jane", "Jo", "Jack"}
+//	if strings.Join(participants, ",") != strings.Join(expected, ",") {
+//		failWithFailure(t, expected, participants)
+//	}
+//	file.Close()
+//
+//	// Add Jill, don't add Jane
+//	addParticipant := []string{"add", "Jill", "Jane"}
+//	manageParticipants(configuration, addParticipant)
+//	file, _ = os.Open(filename)
+//	var newParticipants []string
+//	for scanner.Scan() {
+//		newParticipants = append(newParticipants, scanner.Text())
+//	}
+//	expected = []string{"Jane", "Jo", "Jack", "Jill"}
+//	if strings.Join(newParticipants, ",") != strings.Join(expected, ",") {
+//		failWithFailure(t, expected, newParticipants)
+//	}
+//	file.Close()
+//
+//	// Remove Jill, John should have no effect
+//	removeParticipant := []string{"remove", "Jill", "John"}
+//	manageParticipants(configuration, removeParticipant)
+//	file, _ = os.Open("participants.txt")
+//	var finalParticipants []string
+//	for scanner.Scan() {
+//		finalParticipants = append(finalParticipants, scanner.Text())
+//	}
+//	expected = []string{"Jane", "Jo", "Jack"}
+//	if strings.Join(finalParticipants, ",") != strings.Join(expected, ",") {
+//		failWithFailure(t, expected, finalParticipants)
+//	}
+//	file.Close()
+//	os.Remove(filename)
+//}
+
 func runMob(t *testing.T, workingDir string, args ...string) {
 	setWorkingDir(workingDir)
 	newArgs := append([]string{"mob"}, args...)
