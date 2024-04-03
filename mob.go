@@ -13,6 +13,7 @@ import (
 	"github.com/remotemobprogramming/mob/v4/open"
 	"github.com/remotemobprogramming/mob/v4/say"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -21,13 +22,14 @@ import (
 	"reflect"
 	"regexp"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
 )
 
 const (
-	versionNumber     = "4.5.0"
+	versionNumber     = "4.6.0"
 	minimumGitVersion = "2.13.0"
 )
 
@@ -351,6 +353,12 @@ func execute(command string, parameter []string, configuration config.Configurat
 	case "break":
 		if len(parameter) > 0 {
 			startBreakTimer(parameter[0], configuration)
+		} else {
+			help.Help(configuration)
+		}
+	case "mobbers":
+		if len(parameter) > 1 {
+			manageMobbers(configuration, parameter)
 		} else {
 			help.Help(configuration)
 		}
@@ -1490,4 +1498,20 @@ func startCommand(name string, args ...string) (string, error) {
 
 var exit = func(code int) {
 	os.Exit(code)
+}
+
+func manageMobbers(configuration config.Configuration, parameter []string) {
+	adding := []string{"add", "include", "+"}
+	removing := []string{"remove", "exclude", "-"}
+	if slices.Contains(adding, parameter[0]) == true {
+		for i := 1; i < len(parameter); i++ {
+			log.Println("Adding:", parameter[i])
+		}
+	} else if slices.Contains(removing, parameter[0]) == true {
+		for i := 1; i < len(parameter); i++ {
+			log.Println("Removing:", parameter[i])
+		}
+	} else {
+		help.Help(configuration)
+	}
 }
