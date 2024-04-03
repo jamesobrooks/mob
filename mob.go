@@ -10,6 +10,7 @@ import (
 	"fmt"
 	config "github.com/remotemobprogramming/mob/v4/configuration"
 	"github.com/remotemobprogramming/mob/v4/help"
+	"github.com/remotemobprogramming/mob/v4/manage"
 	"github.com/remotemobprogramming/mob/v4/open"
 	"github.com/remotemobprogramming/mob/v4/say"
 	"io"
@@ -21,13 +22,14 @@ import (
 	"reflect"
 	"regexp"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
 )
 
 const (
-	versionNumber     = "4.5.0"
+	versionNumber     = "4.6.0"
 	minimumGitVersion = "2.13.0"
 )
 
@@ -351,6 +353,12 @@ func execute(command string, parameter []string, configuration config.Configurat
 	case "break":
 		if len(parameter) > 0 {
 			startBreakTimer(parameter[0], configuration)
+		} else {
+			help.Help(configuration)
+		}
+	case "manage":
+		if len(parameter) > 1 {
+			manageParticipants(configuration, parameter)
 		} else {
 			help.Help(configuration)
 		}
@@ -1303,6 +1311,7 @@ func showNext(configuration config.Configuration) {
 	if numberOfLines < 1 {
 		return
 	}
+	// TODO: if participants.txt exists, use it
 	nextTypist, previousCommitters := findNextTypist(lines, gitUserName)
 	if nextTypist != "" {
 		if len(previousCommitters) != 0 {
@@ -1490,4 +1499,16 @@ func startCommand(name string, args ...string) (string, error) {
 
 var exit = func(code int) {
 	os.Exit(code)
+}
+
+func manageParticipants(configuration config.Configuration, parameter []string) {
+	adding := []string{"add", "include", "+"}
+	removing := []string{"remove", "exclude", "-"}
+	if slices.Contains(adding, parameter[0]) == true {
+		manage.AddParticipants(parameter[1:])
+	} else if slices.Contains(removing, parameter[0]) == true {
+		manage.RemoveParticipants(parameter[1:])
+	} else {
+		help.Help(configuration)
+	}
 }

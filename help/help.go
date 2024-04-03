@@ -37,6 +37,10 @@ Timer Commands:
   start <minutes>    Start mob session in wip branch and a <minutes> timer
   break <minutes>    Start <minutes> break timer
 
+Mob Management Commands:
+  manage <add | include | +> <...names>         Add names to participant list
+  manage <remove | exclude | -> <...names>      Remove names from participant list
+
 Short Commands (Options and descriptions as above):
   s                  Alias for 'start'
   n                  Alias for 'next'

@@ -108,7 +108,7 @@ sudo snap connect mob-sh:ssh-keys
 
 ### Using go tools
 
-If you have go 1.20+ you can install and build directly from source:
+If you have go 1.22+ you can install and build directly from source:
 
 ```bash
 go install github.com/remotemobprogramming/mob/v4@latest
