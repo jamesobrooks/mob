@@ -38,8 +38,8 @@ Timer Commands:
   break <minutes>    Start <minutes> break timer
 
 Mob Management Commands:
-  mobbers <add | include | +> <...names>        Add names to participant list
-  mobbers <remove | exclude | -> <...names>     Remove names from participant list
+  manage <add | include | +> <...names>         Add names to participant list
+  manage <remove | exclude | -> <...names>      Remove names from participant list
 
 Short Commands (Options and descriptions as above):
   s                  Alias for 'start'
